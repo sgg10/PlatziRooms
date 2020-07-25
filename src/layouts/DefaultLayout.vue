@@ -31,18 +31,88 @@
       <slot></slot>
     </main>
     <footer-partial></footer-partial>
+    <!-- Modal Login -->
+    <modal :show="modals.login" @close-modal="closeModal('login')">
+      <h2 class="text-grey-darkest font-semibold text-center mb-6">Welcome to Platzi Rooms</h2>
+      <form action="">
+        <div class="mb-4">
+          <label class="input_label">Email</label>
+          <div class="form__field relative">
+            <input class="input__field" type="text" placeholder="example@sample.com">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="input_label">Password</label>
+          <div class="form__field relative">
+            <input class="input__field" type="password" placeholder="****">
+          </div>
+        </div>
+        <div class="mb-4">
+          <button class="btn btn-primary mr-3 w-full">Login</button>
+        </div>
+      </form>
+    </modal>
+    <!-- Modal Register -->
+    <modal :show="modals.register" @close-modal="closeModal('register')">
+      <h2 class="text-grey-darkest font-semibold text-center mb-6">Welcome to Platzi Rooms</h2>
+      <form action="">
+        <div class="mb-4">
+          <label class="input_label">Name</label>
+          <div class="form__field relative">
+            <input class="input__field" type="text" placeholder="Pepito Perez">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="input_label">Email</label>
+          <div class="form__field relative">
+            <input class="input__field" type="text" placeholder="example@sample.com">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="input_label">Password</label>
+          <div class="form__field relative">
+            <input class="input__field" type="password" placeholder="****">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="input_label">Confirm Password</label>
+          <div class="form__field relative">
+            <input class="input__field" type="password" placeholder="****">
+          </div>
+        </div>
+        <div class="mb-4">
+          <button class="btn btn-primary mr-3 w-full">Register</button>
+        </div>
+      </form>
+    </modal>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import HeaderPartial from '@/partials/HeaderPartial.vue';
 import FooterPartial from '@/partials/FooterPartial.vue';
+import Modal from '@/components/Modal.vue';
 
 export default {
   name: 'DefaultLayout',
   components: {
     HeaderPartial,
     FooterPartial,
+    Modal,
+  },
+  computed: {
+    ...mapGetters([
+      'modals',
+    ]),
+  },
+  methods: {
+    closeModal(name) {
+      this.$store.dispatch('TOGGLE_MODAL_STATE', {
+        name,
+        value: false,
+      });
+    },
   },
 };
 </script>
