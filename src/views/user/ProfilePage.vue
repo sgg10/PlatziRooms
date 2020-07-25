@@ -16,9 +16,14 @@
         <div class="grid-container">
           <aside class="profile__aside px-3">
             <div class="profile__card">
-              <div class="profile__thumbnail">
-                <img class="profile__image w-full" src="https://avatars1.githubusercontent.com/u/9919?s=500&v=4">
+              <div class="profile__thumbnail mb-2">
+                <img class="profile__image w-full" :src="profile.avatar">
               </div>
+            </div>
+            <div class="text-lg">
+              <span class="font-semibold">
+                {{ userRoomsCount }}
+              </span> rooms
             </div>
           </aside>
           <div class="profile__fields">
@@ -26,13 +31,15 @@
               <div class="mb-4">
                 <label class="input__label" for="name">Name</label>
                 <div class="form__field relative">
-                  <input class="input__field" id="name" type="text" placeholder="Bruce Wayne">
+                  <input class="input__field" id="name"
+                  v-model="profile.name" type="text" placeholder="Bruce Wayne">
                 </div>
               </div>
               <div class="mb-4">
                 <label class="input__label" for="username">Username</label>
                 <div class="form__field relative">
-                  <input class="input__field" id="username" type="text" placeholder="bruce.wayne">
+                  <input class="input__field" id="username"
+                  v-model="profile.username" type="text" placeholder="bruce.wayne">
                 </div>
               </div>
               <div class="mb-4">
@@ -40,7 +47,7 @@
                   class="input__label"
                   for="avatar">Avatar</label>
                 <div class="form__field relative">
-                  <input class="input__field" id="avatar" type="text" placeholder="https://avatars1.githubusercontent.com/u/9919?s=500&v=4">
+                  <input class="input__field" id="avatar" v-model="profile.avatar" type="text" placeholder="https://avatars1.githubusercontent.com/u/9919?s=500&v=4">
                 </div>
               </div>
               <div class="mb-4">
@@ -52,6 +59,7 @@
                     class="input__field"
                     id="email"
                     type="text"
+                    v-model="profile.email"
                     placeholder="bruce.wayne@imnotbatman.org">
                 </div>
               </div>
@@ -65,6 +73,7 @@
                     rows="5"
                     id="email"
                     type="text"
+                    v-model="profile.bio"
                     placeholder="bruce.wayne@imnotbatman.org"></textarea>
                 </div>
               </div>
@@ -88,11 +97,34 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ProfilePage',
   components: {
     PageLayout,
+  },
+  data() {
+    return {
+      profile: {
+        name: '',
+        username: '',
+        avatar: '',
+        email: '',
+        bio: '',
+      },
+    };
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authUser',
+    }),
+    userRoomsCount() {
+      return this.$store.getters.userRoomsCount(this.user['.key'])
+    },
+  },
+  mounted() {
+    this.profile = this.user;
   },
 };
 </script>
