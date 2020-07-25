@@ -25,9 +25,11 @@
               </div>
             </div>
             <div v-else>
-              <button class="btn__outline btn__outline--teal rounded mr-2" @click.prevent="getLogin">Login</button>
+              <button class="btn__outline btn__outline--teal rounded mr-2"
+              @click.prevent="getLogin">Login</button>
               <button
-                class="bg-yellow-dark text-yellow-darker font-semibold py-2 px-4 rounded" @click.prevent="signUp">
+                class="bg-yellow-dark text-yellow-darker font-semibold py-2 px-4 rounded"
+                @click.prevent="signUp">
                 Register</button>
             </div>
           </div>

@@ -13,7 +13,7 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    SET_MODAL_STATE: (state, { name, value }) =>{
+    SET_MODAL_STATE: (state, { name, value }) => {
       state.modals[name] = value;
     },
   },
