@@ -54,6 +54,9 @@ export default {
   computed: {
     ...mapGetters(['rooms']),
   },
+  beforeCreate() {
+    this.$store.dispatch('FETCH_ROOMS', 12);
+  },
 };
 </script>
 
