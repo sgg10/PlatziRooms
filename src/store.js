@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import firebase from 'firebase';
@@ -42,12 +43,23 @@ export default new Vuex.Store({
     },
     CREATE_ROOM: ({ state, commit }, room) => {
       const newRoom = room;
-      const roomID = `room${Math.random()}`;
+      const roomID = `room${crypto.getRandomValues(new Uint32Array(1)).toString('hex')}`;
       newRoom['.key'] = roomID;
       newRoom.userId = state.authId;
+      newRoom.publishedAt = Math.floor(Date.now() / 1000);
+      newRoom.meta = { likes: 0 };
 
-      commit('SET_ROOM', { newRoom, roomID });
-      commit('APPEND_ROOM_TO_USER', { roomID, userID: newRoom.userId });
+      firebase.firestore().collection('rooms').doc(roomID).set(newRoom).then(resultRoom => {
+        const roomObj = {}
+        roomObj[roomID] = roomID
+        firebase.firestore().collection('users').doc(newRoom.userId).set({
+          rooms: { ...roomObj }
+        }, { merge: true }).then(updateUserResult => {
+          commit('SET_ROOM', { newRoom, roomID });
+          commit('APPEND_ROOM_TO_USER', { roomID, userID: newRoom.userId });
+          return Promise.resolve(state.rooms[roomID])
+        })
+      })
     },
 
     FETCH_ROOMS: ({ state, commit }, limit) => new Promise((resolve, reject) => {
@@ -72,11 +84,20 @@ export default new Vuex.Store({
         })
         .catch(err => reject(new Error(err)));
     }),
+
+    FETCH_SERVICES: ({ state, commit }) => {
+      firebase.firestore().collection('services').get().then( result => {
+        result.docs.forEach(service => 
+          commit('SET_ITEM', { item: service.data(), id: service.id, resource: 'services'})
+        )
+      })
+    }
   },
   getters: {
     modals: state => state.modals,
     authUser: state => state.users[state.authId],
     rooms: state => state.rooms,
     userRoomsCount: state => id => countObjectProperties(state.users[id].rooms),
+    services: state => state.services
   },
 });
