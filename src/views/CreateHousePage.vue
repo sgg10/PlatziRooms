@@ -84,7 +84,7 @@ export default {
       };
 
       this.$store.dispatch('CREATE_ROOM', room);
-      this.$router.push({path: '/'})
+      this.$router.push({name: 'SearchPage'})
     },
     setService(item){
       if(this.publication.services[item['.key']]){

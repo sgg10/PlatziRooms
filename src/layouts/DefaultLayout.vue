@@ -70,19 +70,19 @@
         <div class="mb-4">
           <label class="input_label">Email</label>
           <div class="form__field relative">
-            <input class="input__field" type="text" placeholder="example@sample.com">
+            <input class="input__field" v-model="formRegister.email" type="text" placeholder="example@sample.com">
           </div>
         </div>
         <div class="mb-4">
           <label class="input_label">Password</label>
           <div class="form__field relative">
-            <input class="input__field" type="password" placeholder="****">
+            <input class="input__field" v-model="formRegister.password" type="password" placeholder="****">
           </div>
         </div>
         <div class="mb-4">
           <label class="input_label">Confirm Password</label>
           <div class="form__field relative">
-            <input class="input__field" type="password" placeholder="****">
+            <input class="input__field" v-model="formRegister.password2" type="password" placeholder="****">
           </div>
         </div>
         <div class="mb-4">
@@ -115,6 +115,11 @@ export default {
         password: '',
         rememberMe: false,
       },
+      formRegister: {
+        email: '',
+        password: '',
+        password2: ''
+      }
     };
   },
   computed: {
